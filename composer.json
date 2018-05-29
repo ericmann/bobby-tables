@@ -1,0 +1,17 @@
+{
+    "name": "ericmann/contacts",
+    "description": "Simple demo contact manager application for php[tek] 2018.",
+    "type": "project",
+    "require": {
+        "league/route": "^3.0",
+        "zendframework/zend-diactoros": "^1.7"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Eric Mann",
+            "email": "eric@eamann.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}
