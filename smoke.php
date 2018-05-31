@@ -7,7 +7,7 @@ if (-1 === version_compare(phpversion(), '7.1')) {
     echo sprintf("Running PHP %s. GREAT!\r\n", phpversion());
 }
 
-if (-1 === version_compare(phpversion('sodium'), '7.1')) {
+if (-1 === version_compare(phpversion('sodium'), '2.0')) {
     echo "This project requires Libsodium support. Please install it to continue...\r\n";
     exit(1);
 } else {
