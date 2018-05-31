@@ -59,7 +59,7 @@ BODY;
     if (empty($name)) {
         $body = str_replace('NAME', '', $body);
     } else {
-        $body = str_replace('NAME', 'You searched for: <b>' . $name . '</b>', $body);
+        $body = str_replace('NAME', 'You searched for: <b>' . htmlspecialchars($name) . '</b>', $body);
     }
 
     return $body;

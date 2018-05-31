@@ -24,7 +24,7 @@ function validate_auth(string $username, string $password)
         $user = get_user_by_username($username);
 
         if (password_verify($password, $user['password'])) {
-            setcookie('username', $username);
+            $_SESSION['username']= $username;
             return true;
         }
 

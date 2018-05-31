@@ -43,6 +43,8 @@ function validate_auth(string $username, string $password)
  */
 function update_favorites(string $user_id, string $fave_flavor)
 {
+    if ($user_id !== $_SESSION['user_id']) return;
+
     $handle = new \PDO('sqlite:users.db');
 
     $statement = $handle->prepare('UPDATE users SET fave_flavor = :flavor where id = :id');

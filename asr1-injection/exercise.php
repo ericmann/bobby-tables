@@ -12,12 +12,13 @@ namespace EAMann\BobbyTables\Lesson;
  */
 function find_user(string $name): string
 {
-    $handle = new \SQLite3('users.db');
+    $handle = new \PDO('sqlite:users.db');
 
-    $results = $handle->query('SELECT * from users where name=\'' . $name . '\'');
+    $statement = $handle->prepare('SELECT * from users where name = :name');
+    $statement->execute([':name' => $name]);
 
     $out = '<ul>';
-    while($row = $results->fetchArray()) {
+    while($row = $statement->fetch()) {
         $out .= '<li>' . $row['name'] . ' - ' . $row['talk'];
     }
     $out .= '</ul>';
@@ -37,7 +38,9 @@ function serve_file(string $filename)
         "Content-Disposition: attachment; filename=\"{$filename}\""
     );
 
-    passthru("cat files/" . $filename);
+    $sanitized = basename($filename);
+
+    passthru("cat files/" . $sanitized);
     exit();
 
 }

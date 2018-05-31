@@ -2,20 +2,23 @@
 
 namespace EAMann\BobbyTables\Lesson;
 
-function encrypt($str)
+function encrypt($str, $key)
 {
-    for ($i = 0; $i < 5; $i++) {
-        $str = strrev(base64_encode($str));
-    }
-    return $str;
+    $nonce = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
+
+    $cipherText = sodium_crypto_secretbox($str, $nonce, $key);
+
+    return bin2hex($nonce . $cipherText);
 }
 
-function decrypt($str)
+function decrypt($str, $key)
 {
-    for ($i = 0; $i < 5; $i++) {
-        $str = base64_decode(strrev($str));
-    }
-    return $str;
+    $concatenated = hex2bin($str);
+
+    $nonce = substr($concatenated, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
+    $cipherText = substr($concatenated, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
+
+    return sodium_crypto_secretbox_open($cipherText, $nonce, $key);
 }
 
 /**
@@ -27,9 +30,10 @@ function decrypt($str)
  */
 function get_secret(): string
 {
-    $decryption_key = getenv('SECRET_KEY');
+    // 621bc7687093d62f1077d17f03b1ef2f800e9a8fec34dd16259c85202af1e42e
+    $decryption_key = hex2bin(getenv('SECRET_KEY'));
 
     $encrypted = file_get_contents('secret.txt');
 
-    return decrypt(hex2bin($encrypted));
+    return decrypt($encrypted, $decryption_key);
 }

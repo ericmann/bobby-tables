@@ -57,11 +57,11 @@ $route->map('POST', '/', function(ServerRequestInterface $request, ResponseInter
 
 // Present our "secret page" but only if we're logged in
 $route->map('GET', '/auth', function(ServerRequestInterface $request, ResponseInterface $response) {
-    if (! isset($_COOKIE['username'])) {
+    if (! isset($_SESSION['username'])) {
         return new RedirectResponse('http://localhost:8888/?error=notloggedin');
     }
 
-    $response->getBody()->write(Util\welcome($_COOKIE['username']));
+    $response->getBody()->write(Util\welcome($_SESSION['username']));
 
     return $response;
 });
